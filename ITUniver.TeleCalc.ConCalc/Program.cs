@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ITUniver.TeleCalc.Core;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace ITUniver.TeleCalc.ConCalc
 {
@@ -12,39 +11,31 @@ namespace ITUniver.TeleCalc.ConCalc
         {
             try
             {
-                if (args.Length == 0) Console.WriteLine("Аргументов нет");
-                else if (args.Length < 3) Console.WriteLine("Мало аргументов.");
+                Calc action = new Calc();
+                double x; double y;
+                string opername;
+                if (args.Length == 0)
+                {
+                    Console.WriteLine("Текущий список команд:");
+                    for (int i = 0; i < action.GetOpers.Length; i++) Console.Write(action.GetOpers[i] + " ");
+                    Console.WriteLine("\nВведите команду из списка и данные через пробел:");
+                    string[] buffer = Console.ReadLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    opername = buffer[0].ToLower();
+                    x = Convert.ToDouble(buffer[1]);
+                    y = Convert.ToDouble(buffer[2]);
+                }
                 else
                 {
-                    double x = Convert.ToDouble(args[1]);
-                    double y = Convert.ToDouble(args[2]);
-                    args[0] = args[0].ToLower();
-                    Calc action = new Calc();
-                    switch (args[0])
-                    {
-                        case "sum":
-                            Console.WriteLine($"{action.Sum(x,y)}");
-                            break;
-                        case "diff":
-                            Console.WriteLine($"{action.Diff(x, y)}");
-                            break;
-                        case "mult":
-                            Console.WriteLine($"{action.Mult(x, y)}");
-                            break;
-                        case "div":
-                            {
-                                if (y != 0) Console.WriteLine($"{action.Div(x, y)}");
-                                else Console.WriteLine("На 0 делить нельзя");
-                                break;
-                            }
-                        case "xor":
-                            Console.WriteLine($"{action.XOR(x, y)}");
-                            break;
-                        default:
-                            Console.WriteLine("Неверная команда!");
-                            break;
-                    }
+                    x = Convert.ToDouble(args[1]);
+                    y = Convert.ToDouble(args[2]);
+                    opername = args[0].ToLower();
                 }
+                double? result = action.Exec(opername, x, y);
+                Console.WriteLine($"{x} {opername} {y} = {result}");
+                string[] argsclear = new string[0];
+                args = argsclear;
+                Console.ReadKey();
+                Main(args);
             }
             catch (Exception ex)
             {

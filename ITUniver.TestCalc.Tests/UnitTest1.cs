@@ -45,6 +45,8 @@ namespace ITUniver.TestCalc.Tests
             //деление
             Assert.AreEqual(0.5, result7);
             //Assert.AreEqual(error, result8);
+			//правильно
+			Assert.AreEqual(Double.PositiveInfinity, result8);
             //xor
             Assert.AreEqual(29, result9);
             Assert.AreEqual(33, result10);
