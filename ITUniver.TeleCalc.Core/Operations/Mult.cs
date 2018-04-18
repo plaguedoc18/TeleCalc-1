@@ -11,12 +11,7 @@ namespace ITUniver.TeleCalc.Core.Operations
         public string Name => "mult";
         public double[] Args
         {
-            set
-            {
-                var sum = value.ElementAt(0);
-                sum = value.Select((x, i) => sum * value[i]).Last();
-                Result = sum;
-            }
+            set { Result = value.Aggregate((x, y) => x * y); }
             get { return new double[0]; }
         }
         public double? Result { get; private set; }

@@ -33,9 +33,8 @@ namespace ITUniver.TeleCalc.ConCalc
                 double? result = action.Exec(opername, x, y);
                 Console.WriteLine($"{x} {opername} {y} = {result}");
                 string[] argsclear = new string[0];
-                args = argsclear;
                 Console.ReadKey();
-                Main(args);
+                Main(argsclear);
             }
             catch (Exception ex)
             {
