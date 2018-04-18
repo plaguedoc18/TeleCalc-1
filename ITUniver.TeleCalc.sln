@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITUniver.TeleCalc.ConCalc",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITUniver.TeleCalc.Core", "ITUniver.TeleCalc.Core\ITUniver.TeleCalc.Core.csproj", "{61E2786F-83D0-4874-A373-FD8BD7F8A98D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ITUniver.TeleCalc.Web", "ITUniver.TeleCalc.Web\ITUniver.TeleCalc.Web.csproj", "{AF236D5E-112D-44EC-B482-2BB94956B679}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{61E2786F-83D0-4874-A373-FD8BD7F8A98D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61E2786F-83D0-4874-A373-FD8BD7F8A98D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61E2786F-83D0-4874-A373-FD8BD7F8A98D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AF236D5E-112D-44EC-B482-2BB94956B679}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AF236D5E-112D-44EC-B482-2BB94956B679}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AF236D5E-112D-44EC-B482-2BB94956B679}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AF236D5E-112D-44EC-B482-2BB94956B679}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

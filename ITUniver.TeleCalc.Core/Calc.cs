@@ -35,23 +35,14 @@ namespace ITUniver.TeleCalc.Core
             opernames = opernamesint.ToArray();
         }
         
-        public double Exec(string operName,double x, double y)
+        public double Exec(string operName,double? x, double? y)
         {
             IOperation operation = null;
-            /*foreach (var item in operations)
-            {
-                if (item.Name == operName)
-                {
-                    operation = item;
-                    break;
-                }
-            }*/
-            //operation = operations.Where(o => o.Name == operName).FirstOrDefault(); более длинная запись
             operation = operations
                 .FirstOrDefault(o => o.Name == operName);
             if (operation == null)
                 return double.NaN;
-            operation.Args = new double[] { x, y };
+            operation.Args = new double[] { (double)x, (double)y };
             return (double)operation.Result;
         }
     #region old

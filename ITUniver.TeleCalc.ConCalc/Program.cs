@@ -17,7 +17,10 @@ namespace ITUniver.TeleCalc.ConCalc
                 if (args.Length == 0)
                 {
                     Console.WriteLine("Текущий список команд:");
-                    for (int i = 0; i < action.GetOpers.Length; i++) Console.Write(action.GetOpers[i] + " ");
+                    foreach(string elem in action.GetOpers)
+                    {
+                        Console.Write(elem + " ");
+                    }
                     Console.WriteLine("\nВведите команду из списка и данные через пробел:");
                     string[] buffer = Console.ReadLine().Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     opername = buffer[0].ToLower();
