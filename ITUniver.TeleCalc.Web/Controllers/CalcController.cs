@@ -14,7 +14,8 @@ namespace ITUniver.TeleCalc.Web.Controllers
         public ActionResult Exec()
         {
             Calc action = new Calc();
-            ViewBag.Opers = action.GetOpers;
+            SelectList opers = new SelectList(action.GetOpers);
+            ViewBag.Opers = opers;
             return View();
         }
         [HttpPost]

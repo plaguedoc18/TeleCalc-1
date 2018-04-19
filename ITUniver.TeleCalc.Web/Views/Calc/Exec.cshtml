@@ -14,16 +14,7 @@
         <h4>CalcModel</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-            <div>
-                <select>
-                    @foreach (string elem in ViewBag.Opers)
-                    {
-                        <option>
-                            @elem
-                        </option>
-                    }
-                </select>
-            </div>
+        @Html.DropDownListFor(model => model.opers, ViewBag.Opers as SelectList)
         <div class="form-group">
             @Html.LabelFor(model => model.opername, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
