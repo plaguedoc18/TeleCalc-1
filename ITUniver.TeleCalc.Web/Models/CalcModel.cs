@@ -10,7 +10,6 @@ namespace ITUniver.TeleCalc.Web.Models
 {
     public class CalcModel
     {
-        public string oper { get; set; }
         [Required(ErrorMessage = "Пропустил!")]
         public string opername { get; set; }
         [Required(ErrorMessage = "Пропустил!")]

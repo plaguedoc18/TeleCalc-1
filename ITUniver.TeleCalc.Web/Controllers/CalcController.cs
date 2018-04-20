@@ -13,17 +13,17 @@ namespace ITUniver.TeleCalc.Web.Controllers
         [HttpGet]
         public ActionResult Exec()
         {
-            Calc action = new Calc();
-            SelectList opers = new SelectList(action.GetOpers);
-            ViewBag.Opers = opers;
+            var action = new Calc();
+            ViewBag.Opers = new SelectList(action.GetOpers);
             return View();
         }
         [HttpPost]
         public ActionResult Exec(CalcModel model)   //Эта модель заполняется
         {
-            Calc action = new Calc();
+            var action = new Calc();
             if (!string.IsNullOrEmpty(model.opername))
             {
+                ViewBag.Opers = new SelectList(action.GetOpers);
                 ViewBag.OperName = model.opername.ToLower();
                 ViewBag.x = model.X;
                 ViewBag.y = model.Y;
