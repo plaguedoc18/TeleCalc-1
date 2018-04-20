@@ -17,7 +17,7 @@ namespace ITUniver.TeleCalc.ConCalc
                 if (args.Length == 0)
                 {
                     Console.WriteLine("Текущий список команд:");
-                    foreach(string elem in action.GetOpers)
+                    foreach(string elem in Calc.GetOpers)
                     {
                         Console.Write(elem + " ");
                     }

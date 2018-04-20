@@ -14,26 +14,23 @@ namespace ITUniver.TeleCalc.Web.Controllers
         public ActionResult Exec()
         {
             var action = new Calc();
-            ViewBag.Opers = new SelectList(action.GetOpers);
+            ViewBag.Opers = new SelectList(Calc.GetOpers);
             return View();
         }
         [HttpPost]
-        public ActionResult Exec(CalcModel model)   //Эта модель заполняется
+        public double Exec(CalcModel model)   //Эта модель заполняется
         {
             var action = new Calc();
             if (!string.IsNullOrEmpty(model.opername))
             {
-                ViewBag.Opers = new SelectList(action.GetOpers);
-                ViewBag.OperName = model.opername.ToLower();
-                ViewBag.x = model.X;
-                ViewBag.y = model.Y;
-                model.Result = action.Exec(ViewBag.OperName, ViewBag.x, ViewBag.y);
+                ViewBag.Opers = new SelectList(Calc.GetOpers);
+                return action.Exec(model.opername.ToLower(), model.X, model.Y);
             }
             else
             {
                 ViewBag.Error = "Что-то пошло не так!";
             }
-            return View(model);
+            return double.NaN;
         }
         [HttpGet]
         public ActionResult Index(string opername, double? x, double? y)
@@ -55,8 +52,8 @@ namespace ITUniver.TeleCalc.Web.Controllers
         public ActionResult Operations()
         {
             Calc ForOpers = new Calc();
-            ViewBag.opers = ForOpers.GetOpers;
-            return View("Ops");
+            ViewBag.opers = Calc.GetOpers;
+            return View();
         }
     }
 }

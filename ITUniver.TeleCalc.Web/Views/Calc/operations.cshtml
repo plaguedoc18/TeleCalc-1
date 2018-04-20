@@ -1,15 +1,8 @@
 ﻿
 @{
-    ViewBag.Title = "operations";
+    ViewBag.Title = "Операции";
 }
 
 <h2>Текущие доступные операции</h2>
 
-<ul>
-    @foreach(string elem in ViewBag.opers)
-    {
-        <li>
-            @elem
-        </li>
-    }
-</ul>
+@Helpers.LiList(ViewBag.opers)

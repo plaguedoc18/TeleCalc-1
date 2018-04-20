@@ -9,8 +9,8 @@ namespace ITUniver.TeleCalc.Core
     public class Calc
     {
         private IOperation[] operations { get; set; }
-        private string[] opernames { get; set; }
-        public string[] GetOpers { get { return opernames; } }
+        private static string[] opernames { get; set; }
+        public static string[] GetOpers { get { return opernames; } }
         public Calc()
         {
             var opers = new List<IOperation>();

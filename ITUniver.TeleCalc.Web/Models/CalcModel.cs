@@ -10,12 +10,15 @@ namespace ITUniver.TeleCalc.Web.Models
 {
     public class CalcModel
     {
+
+        [DisplayName("Операция")]
         [Required(ErrorMessage = "Пропустил!")]
         public string opername { get; set; }
         [Required(ErrorMessage = "Пропустил!")]
         public double X { get; set; }
         [Required(ErrorMessage = "Пропустил!")]
         public double Y { get; set; }
+        [DisplayName("Результат:")]
         [ReadOnly(true)]
         public double Result { get; set; }
 
