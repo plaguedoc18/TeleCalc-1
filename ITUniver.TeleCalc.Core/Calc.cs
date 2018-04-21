@@ -11,6 +11,8 @@ namespace ITUniver.TeleCalc.Core
         private IOperation[] operations { get; set; }
         private static string[] opernames { get; set; }
         public static string[] GetOpers { get { return opernames; } }
+        private double Result { get; set; }
+        public double GetResult { get { return Result; } }
         public Calc()
         {
             var opers = new List<IOperation>();
@@ -43,7 +45,8 @@ namespace ITUniver.TeleCalc.Core
             if (operation == null)
                 return double.NaN;
             operation.Args = new double[] { (double)x, (double)y };
-            return (double)operation.Result;
+            Result = (double)operation.Result;
+            return Result;
         }
     #region old
         public double Sqr(double x)

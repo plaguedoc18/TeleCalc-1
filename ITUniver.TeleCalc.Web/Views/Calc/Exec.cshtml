@@ -6,7 +6,7 @@
 
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Exec", "Calc", FormMethod.Post, new { @id = "calc-form" }))
 {
     @Html.AntiForgeryToken()
     <div class="form-horizontal">
@@ -32,20 +32,15 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Y, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Y, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Y, new { htmlAttributes = new { @class = "form-control", @id = "inputY", @onblur = "calculate();return false;" } })
                 @Html.ValidationMessageFor(model => model.Y, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.Partial("_Result")
-    </div>
-        
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @*Html.Submit("Вычислить", "calculate(); return false;")*@
-                @Html.Submit("Вычислить")
+            <div id="result">
+                @*@{Html.RenderAction("_Result");}*@
+                @Html.Partial("_Result")
             </div>
         </div>
     </div>
@@ -56,8 +51,20 @@
 </div>
 
 
-<script>
-
+@*<script>
+    function calculate()
+    {
+        $.ajax({
+            method: "POST",
+            url: "/Calc/Exec",
+            data: $('form').serializeArray(),
+            success: function (result) {
+                $("#result").load('@Url.Action("_Result")')
+            }
+        });
+    }
+</script>*@ @*Отправка аяксом*@
+@*<script>
     function calculate()
     {
         alert("Ну, короче, привет");
@@ -75,5 +82,9 @@
 
         alert("Ну, короче, всё");
     }
-
-</script>
+</script>Отправка с практики*@
+<script>
+ inputY.onblur = function () {
+    document.getElementById('calc-form').submit();
+}
+</script> @*отправка при потери фокуса на inputY*@
