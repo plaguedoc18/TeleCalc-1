@@ -170,8 +170,9 @@
     <Content Include="Views\Shared\Operation.cshtml" />
     <Content Include="Views\Shared\Ops.cshtml" />
     <Content Include="Views\Calc\Exec.cshtml" />
-    <Content Include="Views\Shared\DisplayTemplates\Double.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\FDouble.cshtml" />
     <Content Include="Views\Shared\EditorTemplates\FDouble.cshtml" />
+    <Content Include="Views\Shared\_Result.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -10,27 +10,28 @@ namespace ITUniver.TeleCalc.Web.Controllers
 {
     public class CalcController : Controller
     {
+        Calc action = new Calc();
         [HttpGet]
         public ActionResult Exec()
         {
-            var action = new Calc();
             ViewBag.Opers = new SelectList(Calc.GetOpers);
             return View();
         }
         [HttpPost]
-        public double Exec(CalcModel model)   //Эта модель заполняется
+        public ActionResult Exec(CalcModel model)   //Эта модель заполняется
         {
-            var action = new Calc();
+            model.Result = double.NaN;
             if (!string.IsNullOrEmpty(model.opername))
             {
                 ViewBag.Opers = new SelectList(Calc.GetOpers);
-                return action.Exec(model.opername.ToLower(), model.X, model.Y);
+                model.Result = action.Exec(model.opername.ToLower(), model.X, model.Y);
             }
             else
             {
                 ViewBag.Error = "Что-то пошло не так!";
+                model.Result = double.NaN;
             }
-            return double.NaN;
+            return View(model);
         }
         [HttpGet]
         public ActionResult Index(string opername, double? x, double? y)
