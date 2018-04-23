@@ -13,34 +13,42 @@
         <h4>Вычислятор</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         <div class="form-group">
             @Html.LabelFor(model => model.opername, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.opername, ViewBag.Opers as SelectList, htmlAttributes: new { @class = "form-control" })
+                @Html.DropDownListFor(model => model.opername,
+                    Model.OperationList,
+                    htmlAttributes: new { @class = "form-control",
+                        oninput = "calculate();" })
                 @Html.ValidationMessageFor(model => model.opername, "", new { @class = "text-danger" })
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.X, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.InputData,
+                        htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.X, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.X, "", new { @class = "text-danger" })
+                @Html.EditorFor(
+                    model => model.InputData,
+                    "Collection",    /*явное использование шаблона*/
+                    new
+                    {
+                        htmlAttributes = new
+                        {
+                            @class = "form-control",
+                            oninput = "calculate();",
+                            style = "display:inline-block; margin-left:5px; margin-top:5px; height: 30px; width: 20%;"
+                        }
+                    })
+                @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Y, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Y, new { htmlAttributes = new { @class = "form-control", @id = "inputY", @onblur = "calculate();return false;" } })
-                @Html.ValidationMessageFor(model => model.Y, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
         <div class="form-group">
-            <div id="result">
-                @*@{Html.RenderAction("_Result");}*@
-                @Html.Partial("_Result")
+            @Html.LabelFor(model => model.Result, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10" id="result">
             </div>
         </div>
     </div>
@@ -50,41 +58,31 @@
     @Html.ActionLink("Back to List", "Index")
 </div>
 
-
-@*<script>
-    function calculate()
-    {
-        $.ajax({
-            method: "POST",
-            url: "/Calc/Exec",
-            data: $('form').serializeArray(),
-            success: function (result) {
-                $("#result").load('@Url.Action("_Result")')
-            }
-        });
-    }
-</script>*@ @*Отправка аяксом*@
-@*<script>
-    function calculate()
-    {
-        alert("Ну, короче, привет");
-
-        $.ajax({
-            method: "POST",
-            url: "/Calc/Exec",
-            data: $('form').serializeArray()
-        }).success(
-        function (result)
-        {
-            $("#result").html(result);
-        }
-        )
-
-        alert("Ну, короче, всё");
-    }
-</script>Отправка с практики*@
 <script>
- inputY.onblur = function () {
+    function calculate() {
+
+        var xElement = $('input[name=InputData]').last();
+        if (xElement.val().endsWith(" ")) {
+            var newInput =
+                $("<input class=\"form-control text-box single-line\" name=\"InputData\" oninput=\"calculate();\" type=\"text\" value=\"\" style = \"display:inline-block; margin-left:5px; margin-top:5px; height: 30px; width: 20%;\">");
+            newInput.insertAfter(xElement);
+            newInput.focus();
+        }
+        setTimeout(function _post() {
+            $.ajax({
+                method: "POST",
+                url: "/Calc/Exec",
+                data: $('form').serializeArray()
+            }).success(
+            function (result) {
+                $("#result").html(result);
+            }
+            )
+        }, 5000);
+    }
+</script>@*Отправка с практики*@
+@*<script>
+ inputY.onchange = function () {
     document.getElementById('calc-form').submit();
 }
 </script> @*отправка при потери фокуса на inputY*@

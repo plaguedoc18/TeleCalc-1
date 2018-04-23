@@ -1,6 +1,7 @@
 ﻿using ITUniver.TeleCalc.Core.Operations;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -9,14 +10,50 @@ namespace ITUniver.TeleCalc.Core
     public class Calc
     {
         private IOperation[] operations { get; set; }
-        private static string[] opernames { get; set; }
-        public static string[] GetOpers { get { return opernames; } }
-        private double Result { get; set; }
-        public double GetResult { get { return Result; } }
+        private string[] opernames { get; set; }
+        public IEnumerable<string> GetOpers()
+        {
+            return operations.Select(o => o.Name);
+        }
+        /*public Calc()
+        {
+            var opers = new List<IOperation>();
+            //получить сборки из папки
+            const String _path = @"Z:\ITUniver\dlls\";
+            string[] files = Directory.GetFiles(_path);
+            Assembly assembly;
+            Type[] classes;
+            Type[] interfaces;
+            bool isOperation;
+            foreach (var file in files)
+            {
+                if (File.Exists(file))
+                {
+                    assembly = Assembly.LoadFrom(file);
+                    //получить типы в ней
+                    classes = assembly.GetTypes();
+                    foreach (var item in classes)
+                    {
+                        //получаем интерфейсы, которые реализует класс
+                        interfaces = item.GetInterfaces();
+                        isOperation = interfaces.Any(i => i == typeof(IOperation));
+
+                        if (isOperation)
+                        {
+                            var obj = System.Activator.CreateInstance(item) as IOperation;
+                            if (obj != null)
+                            {
+                                opers.Add(obj);
+                            }
+                        }
+                    }
+                }
+            }
+            operations = opers.ToArray();
+        }*/
         public Calc()
         {
             var opers = new List<IOperation>();
-            var opernamesint = new List<string>();
             //получить текущую сборку
             var assembly = Assembly.GetExecutingAssembly();
             //получить типы в ней
@@ -26,28 +63,37 @@ namespace ITUniver.TeleCalc.Core
                 //получаем интерфейсы, которые реализует класс
                 var interfaces = item.GetInterfaces();
                 var isOperation = interfaces.Any(i => i == typeof(IOperation));
+
                 if (isOperation)
                 {
                     var obj = System.Activator.CreateInstance(item) as IOperation;
-                    if (obj != null) opers.Add(obj);
-                    opernamesint.Add(item.Name);
+                    if (obj != null)
+                    {
+                        opers.Add(obj);
+                    }
                 }
             }
             operations = opers.ToArray();
-            opernames = opernamesint.ToArray();
         }
-        
-        public double Exec(string operName,double? x, double? y)
+
+        [Obsolete("Используйте метод Exec(operNames, args)")]
+        public double Exec(string operName, double x, double y)
         {
-            IOperation operation = null;
-            operation = operations
+            return Exec(operName, new double[] { x, y });
+        }
+
+        public double Exec(string operName, IEnumerable<double> Args)
+        {
+            IOperation operation = operations
                 .FirstOrDefault(o => o.Name == operName);
             if (operation == null)
+            {
                 return double.NaN;
-            operation.Args = new double[] { (double)x, (double)y };
-            Result = (double)operation.Result;
-            return Result;
+            }
+            operation.Args = Args.ToArray();
+            return (double)operation.Result;
         }
+
     #region old
         public double Sqr(double x)
         {

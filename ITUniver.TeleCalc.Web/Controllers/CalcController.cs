@@ -1,4 +1,5 @@
 ﻿using ITUniver.TeleCalc.Core;
+using ITUniver.TeleCalc.Core.Operations;
 using ITUniver.TeleCalc.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -10,39 +11,37 @@ namespace ITUniver.TeleCalc.Web.Controllers
 {
     public class CalcController : Controller
     {
-        Calc action = new Calc();
+        private Calc action { get; set; }
+        public CalcController()
+        {
+            action = new Calc();
+        }
         [HttpGet]
         public ActionResult Exec()
         {
-            ViewBag.Opers = new SelectList(Calc.GetOpers);
-            return View();
+            var model = new CalcModel();
+            model.OperationList = new SelectList(action.GetOpers());
+            return View(model);
         }
         [HttpPost]
-        public ActionResult Exec(CalcModel model)   //Эта модель заполняется
+        public PartialViewResult Exec(CalcModel model)   //Эта модель заполняется
         {
-            model.Result = double.NaN;
-            if (!string.IsNullOrEmpty(model.opername))
+            var result = double.NaN;
+            if (action.GetOpers().Contains(model.opername))
             {
-                ViewBag.Opers = new SelectList(Calc.GetOpers);
-                model.Result = action.Exec(model.opername.ToLower(), model.X, model.Y);
+                result = action.Exec(model.opername, model.InputData);
             }
-            else
-            {
-                ViewBag.Error = "Что-то пошло не так!";
-                model.Result = double.NaN;
-            }
-            return View(model);
+            return PartialView("_Result", result);
         }
         [HttpGet]
         public ActionResult Index(string opername, double? x, double? y)
         {
-            Calc action = new Calc();
-            if (opername != null && x != null && y != null)
+            if (action.GetOpers().Contains(opername))
             {
                 ViewBag.OperName = opername.ToLower();
                 ViewBag.x = x;
                 ViewBag.y = y;
-                ViewBag.result = action.Exec(ViewBag.OperName, ViewBag.x, ViewBag.y);
+                ViewBag.result = action.Exec(opername, new [] { x ?? 0, y ?? 0 });
             }
             else
             {
@@ -52,8 +51,7 @@ namespace ITUniver.TeleCalc.Web.Controllers
         }
         public ActionResult Operations()
         {
-            Calc ForOpers = new Calc();
-            ViewBag.opers = Calc.GetOpers;
+            ViewBag.opers = action.GetOpers();
             return View();
         }
     }
