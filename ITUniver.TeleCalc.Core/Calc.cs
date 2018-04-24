@@ -15,48 +15,9 @@ namespace ITUniver.TeleCalc.Core
         {
             return operations.Select(o => o.Name);
         }
-        /*public Calc()
+        private List<IOperation> GetLibrary(Assembly assembly)
         {
             var opers = new List<IOperation>();
-            //получить сборки из папки
-            const String _path = @"Z:\ITUniver\dlls\";
-            string[] files = Directory.GetFiles(_path);
-            Assembly assembly;
-            Type[] classes;
-            Type[] interfaces;
-            bool isOperation;
-            foreach (var file in files)
-            {
-                if (File.Exists(file))
-                {
-                    assembly = Assembly.LoadFrom(file);
-                    //получить типы в ней
-                    classes = assembly.GetTypes();
-                    foreach (var item in classes)
-                    {
-                        //получаем интерфейсы, которые реализует класс
-                        interfaces = item.GetInterfaces();
-                        isOperation = interfaces.Any(i => i == typeof(IOperation));
-
-                        if (isOperation)
-                        {
-                            var obj = System.Activator.CreateInstance(item) as IOperation;
-                            if (obj != null)
-                            {
-                                opers.Add(obj);
-                            }
-                        }
-                    }
-                }
-            }
-            operations = opers.ToArray();
-        }*/
-        public Calc()
-        {
-            var opers = new List<IOperation>();
-            //получить текущую сборку
-            var assembly = Assembly.GetExecutingAssembly();
-            //получить типы в ней
             var classes = assembly.GetTypes();
             foreach (var item in classes)
             {
@@ -73,7 +34,24 @@ namespace ITUniver.TeleCalc.Core
                     }
                 }
             }
-            operations = opers.ToArray();
+            return opers;
+        }
+        public Calc()
+        {
+            var AllOpers = new List<IOperation>();
+            var assemblies = new List<Assembly>() { Assembly.GetExecutingAssembly() };
+            var assembly = Assembly.GetExecutingAssembly();
+            const String _path = @"Z:\ITUniver\dlls\";
+            if (Directory.Exists(_path))
+            {
+                var dlls = Directory.GetFiles(_path, "*.dll");
+                assemblies.AddRange(dlls.Select(dll => Assembly.LoadFile(dll)));
+            }
+            foreach (var elem in assemblies)
+            {
+                AllOpers.AddRange(GetLibrary(elem));
+            }
+            operations = AllOpers.ToArray();
         }
 
         [Obsolete("Используйте метод Exec(operNames, args)")]

@@ -38,7 +38,8 @@
                         {
                             @class = "form-control",
                             oninput = "calculate();",
-                            style = "display:inline-block; margin-left:5px; margin-top:5px; height: 30px; width: 20%;"
+                            style = "display:inline-block; margin-left:5px; margin-top:5px; height: 30px; width: 20%;",
+                            onkeyup = "check();"
                         }
                     })
                 @Html.ValidationMessageFor(model => model.InputData, "", new { @class = "text-danger" })
@@ -60,7 +61,8 @@
 
 <script>
     function calculate() {
-
+        
+        var TO = null
         var xElement = $('input[name=InputData]').last();
         if (xElement.val().endsWith(" ")) {
             var newInput =
@@ -68,7 +70,11 @@
             newInput.insertAfter(xElement);
             newInput.focus();
         }
-        setTimeout(function _post() {
+        if (TO)
+        {
+            ClearTimeout(TO);
+        }
+        TO = setTimeout(function _post() {
             $.ajax({
                 method: "POST",
                 url: "/Calc/Exec",
